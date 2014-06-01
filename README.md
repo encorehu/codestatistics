@@ -1,7 +1,7 @@
 codestatistics
 ==============
 
-code statistics tool
+python code statistics tool 
 
 Feature：
 1、support all projects; 
