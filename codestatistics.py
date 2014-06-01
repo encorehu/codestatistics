@@ -1,18 +1,22 @@
 import os;
 
+isContainAnnotate = False;
 is_writefile = True;
-file_name = "codestatistics.txt";
+out_file_name = "codestatistics.txt";
 
 overcode_print_rule = 0;
 basepath="";
 
 #check str whether is annotate
 def isAnnotate(str, ext):
-	flag = (cmp(str, "") != 0) and \
-			(not str.startswith("\/")) and \
-			(not str.startswith("*"));
+	if isContainAnnotate:
+		return False;
+	flag = (cmp(str, "") == 0) or str.startswith("\/") or \
+			str.startswith("*");
 	if(cmp(ext, ".js") != 0):
-		flag = flag and (not str.startswith("#"));
+		flag = flag or str.startswith("#");
+	if(cmp(ext, ".xml") == 0):
+		flag = flag or str.startswith("<!--");
 	return flag;
 
 #calculate file line count
@@ -24,7 +28,7 @@ def calculatelinecount(path):
 	for item in lines:
 		item = item.lstrip();
 		item = item.rstrip();
-		if isAnnotate(item, ext):
+		if (not isAnnotate(item, ext)):
 			count = count + 1;
 	fp.close();
 	return count;
@@ -101,7 +105,7 @@ class CodeFile:
 	
 	def open(self, path):
 		if os.path.isdir(path) and is_writefile:
-			path = path + addSeparator(path) + file_name;
+			path = path + addSeparator(path) + out_file_name;
 			os.walk(path);
 			self.fp = file(path, "w");
 	   
