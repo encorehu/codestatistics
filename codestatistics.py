@@ -13,10 +13,12 @@ def isAnnotate(str, ext):
 		return False;
 	flag = (cmp(str, "") == 0) or str.startswith("\/") or \
 			str.startswith("*");
-	if(cmp(ext, ".js") != 0):
+	if(cmp(ext, ".py") == 0 or cmp(ext, ".sh") == 0):
 		flag = flag or str.startswith("#");
 	elif(cmp(ext, ".xml") == 0):
 		flag = flag or str.startswith("<!--");
+	elif(cmp(ext, ".bat") == 0):
+		flag = flag or str.startswith("rem");	
 	return flag;
 
 #calculate file line count
@@ -155,6 +157,8 @@ def listfiles(path, fo):
 		
 	filelist = os.listdir(path);
 	for item in filelist:
+		if cmp(item, out_file_name) == 0:
+			continue;
 		itempath = path + addSeparator(path) + item;
 		if isFile(itempath):
 			filecount = filecount + 1;
