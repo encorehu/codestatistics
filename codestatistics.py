@@ -15,7 +15,7 @@ def isAnnotate(str, ext):
 			str.startswith("*");
 	if(cmp(ext, ".js") != 0):
 		flag = flag or str.startswith("#");
-	if(cmp(ext, ".xml") == 0):
+	elif(cmp(ext, ".xml") == 0):
 		flag = flag or str.startswith("<!--");
 	return flag;
 
