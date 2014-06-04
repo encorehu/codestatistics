@@ -13,7 +13,8 @@ def isAnnotate(str, ext):
 		return False;
 	flag = (cmp(str, "") == 0) or str.startswith("\/") or \
 			str.startswith("*");
-	if(cmp(ext, ".py") == 0 or cmp(ext, ".sh") == 0):
+	if(cmp(ext, ".py") == 0 or cmp(ext, ".sh") == 0 \
+		or cmp(ext, ".rb") == 0):
 		flag = flag or str.startswith("#");
 	elif(cmp(ext, ".xml") == 0):
 		flag = flag or str.startswith("<!--");
