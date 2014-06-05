@@ -1,7 +1,7 @@
 import os;
 
 isContainAnnotate = False;
-is_writefile = True;
+is_writefile = False;
 out_file_name = "codestatistics.txt";
 
 overcode_print_rule = 0;
