@@ -19,7 +19,7 @@ def isAnnotate(str, ext):
 	elif(cmp(ext, ".xml") == 0):
 		flag = flag or str.startswith("<!--");
 	elif(cmp(ext, ".bat") == 0):
-		flag = flag or str.startswith("rem");	
+		flag = flag or str.startswith("rem") or str.startswith("::");	
 	return flag;
 
 #calculate file line count
