@@ -73,7 +73,9 @@ def isVideo(itempath):
 def isComplineCode(itempath):
 	if itempath.endswith(".class") or itempath.endswith(".o") or \
 		itempath.endswith(".a") or itempath.endswith(".dll") or \
-		itempath.endswith(".so") or itempath.endswith(".jar"):
+		itempath.endswith(".so") or itempath.endswith(".jar") or \
+		itempath.endswith(".fatjar") or itempath.endswith(".bat") or \
+		itempath.endswith(".classpath") or itempath.endswith(".project"):
 		return True;
 	else:
 		return False;
@@ -98,6 +100,7 @@ def isFolder(path, filename):
 		(cmp(filename, ".svn") != 0) and \
 		(cmp(filename, ".repo") != 0) and \
 		(cmp(filename, ".git") != 0) and \
+		(cmp(filename, "proguard") != 0) and \
 		(cmp(filename, ".settings") != 0) and \
 		(cmp(filename, "debug") != 0) and \
 		(cmp(filename, "release") != 0) and \
