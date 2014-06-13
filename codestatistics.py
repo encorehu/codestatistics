@@ -7,19 +7,29 @@ out_file_name = "codestatistics.txt";
 overcode_print_rule = 0;
 basepath="";
 
+existPairedAnnotate = False;
+
 #check str whether is annotate
 def isAnnotate(str, ext):
 	if isContainAnnotate:
 		return False;
+	
+	global existPairedAnnotate;
 	flag = (cmp(str, "") == 0) or str.startswith("\/") or \
-			str.startswith("*");
+			str.startswith("*") or str.startswith("<!--") \
+			or str.startswith("-->") or str.endswith("-->") \
+			or existPairedAnnotate;
+	if(str.startswith("<!--")):
+		existPairedAnnotate = True;
+	if(str.startswith("-->") or str.endswith("-->")):
+		existPairedAnnotate = False;
+		
 	if(cmp(ext, ".py") == 0 or cmp(ext, ".sh") == 0 \
 		or cmp(ext, ".rb") == 0):
 		flag = flag or str.startswith("#");
-	elif(cmp(ext, ".xml") == 0):
-		flag = flag or str.startswith("<!--");
 	elif(cmp(ext, ".bat") == 0):
 		flag = flag or str.startswith("rem") or str.startswith("::");	
+			
 	return flag;
 
 #calculate file line count
@@ -71,7 +81,8 @@ def isComplineCode(itempath):
 #whether is correct file
 def isFile(itempath):
 	itempath = itempath.lower();
-	if (os.path.isfile(itempath)) and \
+	if os.path.exists(itempath) and \
+		os.path.isfile(itempath) and \
 		(not isComplineCode(itempath)) and \
 		(not isMusic(itempath)) and \
 		(not isVideo(itempath)) and \
@@ -82,8 +93,11 @@ def isFile(itempath):
 
 #whether is correct folder
 def isFolder(path, filename):
-	if os.path.isdir(path) and \
+	if os.path.exists(path) and \
+		os.path.isdir(path) and \
 		(cmp(filename, ".svn") != 0) and \
+		(cmp(filename, ".repo") != 0) and \
+		(cmp(filename, ".git") != 0) and \
 		(cmp(filename, ".settings") != 0) and \
 		(cmp(filename, "debug") != 0) and \
 		(cmp(filename, "release") != 0) and \
@@ -150,11 +164,12 @@ def listfiles(path, fo):
 		itemcount = calculatelinecount(path);
 		printAndSaveMessage(itemcount, size, path, fo); #print and save
 		linecount = linecount + itemcount;
-		result = {"linecount":linecount, 'filecount':filecount};
+		result = {'linecount':linecount, 'filecount':filecount};
 		return result;
 		
 	if not isFolder(path, ""):
-		return "path is not a directory!";
+		print "path is not invalid!";
+		return {};
 		
 	filelist = os.listdir(path);
 	for item in filelist:
@@ -163,8 +178,8 @@ def listfiles(path, fo):
 		itempath = path + addSeparator(path) + item;
 		if isFile(itempath):
 			filecount = filecount + 1;
-			itemcount = calculatelinecount(itempath);
 			size = os.path.getsize(itempath);
+			itemcount = calculatelinecount(itempath);
 			relativepath = itempath[len(basepath):];
 			printAndSaveMessage(itemcount, size, relativepath, fo); #print and save
 			linecount = linecount + itemcount;
@@ -172,7 +187,7 @@ def listfiles(path, fo):
 			resp = listfiles(itempath, fo);
 			linecount = linecount + resp['linecount'];
 			filecount = filecount + resp['filecount'];
-	result = {"linecount":linecount, 'filecount':filecount};
+	result = {'linecount':linecount, 'filecount':filecount};
 	return result;
 
 #main enter	
@@ -185,8 +200,9 @@ fo.open(path);
 fo.write(prompt + "\n");
 print prompt;
 resp = listfiles(path, fo);
-result = "project linecount:%d  |  filecount:%d\n" \
+if resp.has_key('linecount'):
+	result = "project linecount:%d  |  filecount:%d\n" \
 				% (resp['linecount'], resp['filecount']);
-fo.write(prompt + "\n" + result);
-fo.close();
-print prompt, "\n", result;
+	fo.write(prompt + "\n" + result);
+	fo.close();
+	print prompt, "\n", result;
