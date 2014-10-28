@@ -49,7 +49,7 @@ def calculatelinecount(path):
 def isPic(itempath):
 	if itempath.endswith(".png") or itempath.endswith(".bmp") or \
 		itempath.endswith(".gif") or itempath.endswith(".jpeg") or \
-		itempath.endswith(".jpg"):
+		itempath.endswith(".jpg") or itempath.endswith(".ico"):
 		return True;
 	else:
 		return False;
