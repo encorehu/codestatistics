@@ -74,7 +74,8 @@ def isComplineCode(itempath):
 	if itempath.endswith(".class") or itempath.endswith(".o") or \
 		itempath.endswith(".a") or itempath.endswith(".dll") or \
 		itempath.endswith(".so") or itempath.endswith(".jar") or \
-		itempath.endswith(".d"):
+		itempath.endswith(".d") or itempath.endswith(".pyc") or \
+		itempath.endswith(".pyo"):
 		return True;
 	else:
 		return False;
