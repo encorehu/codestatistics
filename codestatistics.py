@@ -70,6 +70,16 @@ def isVideo(itempath):
 	else:
 		return False;
 		
+def isBinary(itempath):
+	exts=['.gz','.bz','.zip','.rar']
+	for ext in exts:
+		if itempath.endswith(ext):
+			found=True
+			break
+	else:
+		found=False
+	return found
+
 def isComplineCode(itempath):
 	if itempath.endswith(".class") or itempath.endswith(".o") or \
 		itempath.endswith(".a") or itempath.endswith(".dll") or \
@@ -89,6 +99,7 @@ def isFile(itempath):
 		(not isComplineCode(itempath)) and \
 		(not isMusic(itempath)) and \
 		(not isVideo(itempath)) and \
+		(not isBinary(itempath)) and \
 		(not isPic(itempath)): 
 		return True;
 	else:
